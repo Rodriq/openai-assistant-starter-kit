@@ -107,8 +107,9 @@ export default function UserRegistration({ onRegistrationComplete }: { onRegistr
                 <p className="mb-6 text-lg font-normal text-gray-600">
                   Your trusted AI assistant for legal insights on Cameroon laws and the penal code.
                 </p>
+                <i className="mb-6 text-sm font-light text-gray-400">Business, Succession, Penal, Land, and Labour Laws </i>
               </div>
-              <p className="text-sm sm:text-base text-gray-600 mt-2">Please register to continue</p>
+              <p className="text-sm sm:text-base text-gray-600 mt-2 text-center">Please register to continue</p>
 
             <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
               <div>

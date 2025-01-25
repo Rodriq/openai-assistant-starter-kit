@@ -22,9 +22,9 @@ export default function Home() {
     <main className="min-h-screen bg-gray-50">
       <div className="w-full ">
         {!isRegistered ? (
-          
+
             <UserRegistration onRegistrationComplete={handleRegistrationComplete} />
-          
+
         ) : (
           <div className="mx-auto mb-12 max-w-lg text-center p-6 bg-white rounded-lg shadow-lg">
           <h1 className="mb-4 text-5xl font-extrabold leading-none tracking-tight text-blue-600 md:text-6xl lg:text-6xl">
@@ -33,7 +33,8 @@ export default function Home() {
           <p className="mb-6 text-lg font-normal text-gray-600">
             Your trusted AI assistant for legal insights on Cameroon laws and the penal code.
           </p>
-          <OpenAIAssistant 
+          <i className="mb-6 text-sm font-light text-gray-400">Business, Succession, Penal, Land, and Labour Laws </i>
+          <OpenAIAssistant
           assistantId="asst_iOR0pHxucvqC1vbiHjHerY3O"
           greeting="I am here to assist you with legal matters in Cameroon. How can I help you today?"
         />
@@ -43,8 +44,8 @@ export default function Home() {
       <footer className="mt-auto mb-4 text-sm text-gray-500 text-center">
         &copy; {new Date().getFullYear()} Cameroon Lawyer. All rights reserved.<br></br>
         by <a href="https://nocodesolutions.tech/"><b className="ml-2 text-blue-500 hover:bg-blue-700">Nocode Solutions</b></a>
-        
-         
+
+
       </footer>
     </main>
   );
