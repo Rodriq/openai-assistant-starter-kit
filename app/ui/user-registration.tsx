@@ -67,7 +67,7 @@ export default function UserRegistration({ onRegistrationComplete }: { onRegistr
         // Store registration state in localStorage
         localStorage.setItem('userRegistered', 'true');
         localStorage.setItem('userName', name);
-        localStorage.setItem('userPhone', phone);
+        localStorage.setItem('userPhone', phone.replace(/\s/g, ''));
 
         // Call the callback to show the assistant
         onRegistrationComplete();
