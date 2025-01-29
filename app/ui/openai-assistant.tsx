@@ -1,25 +1,34 @@
 "use client";
 
 import { AssistantStream } from "openai/lib/AssistantStream";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { AiOutlineUser, AiOutlineRobot, AiOutlineSend } from "react-icons/ai";
 import Markdown from "react-markdown";
 import { supabase } from "./supabaseClient"; // Assuming you have a supabaseClient file for initialization
-import { useCallback } from "react";
 
 interface Message {
   id: string;
   role: string;
   content: string;
   createdAt: Date;
+  handleOpenReview?: (value: boolean) => void;
+}
+
+interface Props {
   handleOpenReview: (value: boolean) => void;
 }
 
-export default function OpenAIAssistant({
+type OpenAIAssistantProps = {
+  assistantId?: string;
+  greeting?: string;
+  handleOpenReview: (value: boolean) => void;
+};
+
+const OpenAIAssistant: React.FC<OpenAIAssistantProps> = ({
   assistantId = "",
   greeting = "I am here to assist you with legal matters in Cameroon. How can I help you today?",
   handleOpenReview,
-}) {
+}) => {
   const [isLoading, setIsLoading] = useState(false);
   const [threadId, setThreadId] = useState<string | null>(null);
   const [prompt, setPrompt] = useState("");
@@ -308,7 +317,8 @@ export default function OpenAIAssistant({
       </form>
     </div>
   );
-}
+};
+export default OpenAIAssistant;
 
 export function OpenAIAssistantMessage({ message }: { message: Message }) {
   function displayRole(roleName: string) {
