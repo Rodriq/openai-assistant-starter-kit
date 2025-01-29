@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { supabase } from "./supabaseClient";
 interface RatingContent {
   id: number;
   svg: string;
@@ -14,6 +13,7 @@ const Feedback: React.FC<Props> = ({ handleOpenReview }) => {
   const [rating, setRating] = useState<number | null>(null);
   const [userReview, setUserReview] = useState<string>("");
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [selectedOption, setSelectedOption] = useState("No");
 
   const ratingContent: RatingContent[] = [
     {
@@ -43,12 +43,19 @@ const Feedback: React.FC<Props> = ({ handleOpenReview }) => {
     },
   ];
 
+  const options = [
+    { id: "No", label: "No" },
+    { id: "Maybe", label: "Maybe" },
+    { id: "Yes", label: "Yes" },
+  ];
+
   const handleRatingClick = (id: number) => {
     setRating(id);
   };
   const handleSubmit = async () => {
     setIsSubmitting(true);
     try {
+      console.log("selectedOption: ", selectedOption);
       const phoneNumber = localStorage.getItem("userPhone")!.replace(/\s/g, "");
       await fetch("/api/feedback", {
         method: "POST",
@@ -59,6 +66,7 @@ const Feedback: React.FC<Props> = ({ handleOpenReview }) => {
           rating: ratingContent[rating! - 1]?.text,
           review: userReview,
           user_phone: phoneNumber,
+          need_ai: selectedOption,
         }),
       });
       handleOpenReview(false);
@@ -70,8 +78,8 @@ const Feedback: React.FC<Props> = ({ handleOpenReview }) => {
   };
 
   return (
-    <div className="fixed inset-0 text-start flex items-center justify-center bg-black bg-opacity-50 z-[105]">
-      <div className="relative bg-white rounded-lg shadow-lg text-center">
+    <div className="fixed inset-0 text-start flex justify-center bg-black bg-opacity-50 z-[105] overflow-y-auto py-[10vh] px-4">
+      <div className="relative bg-white rounded-lg shadow-lg text-center h-fit">
         <div
           className={`flex absolute bg-white -right-3 -top-3 items-center justify-center border rounded-full py-3.5 hover:cursor-pointer h-10 w-10 border-blue-500 shadow-lg shadow-blue-500/50`}
           onClick={() => handleOpenReview(false)}
@@ -95,10 +103,11 @@ const Feedback: React.FC<Props> = ({ handleOpenReview }) => {
               Feedback
             </p>
             <p className="text-sm text-start">
-              What do you think about this application?
+              What do you think about this AI Law Helper and the responses it
+              provides?
             </p>
           </div>
-          <div className="grid w-full grid-cols-3 gap-3 py-7 sm:grid-cols-4 md:grid-cols-5">
+          <div className="grid w-full grid-cols-3 gap-3 py-6 sm:grid-cols-4 md:grid-cols-5">
             {ratingContent.map((ratx) => (
               <div
                 key={ratx.id}
@@ -118,8 +127,43 @@ const Feedback: React.FC<Props> = ({ handleOpenReview }) => {
               </div>
             ))}
           </div>
+
+          <div className="mb-5">
+            <p className="text-sm text-start mb-5">
+              Would you like to get AI implemented in your business?
+            </p>
+            <ul className="items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex">
+              {options.map((item, index) => (
+                <li
+                  key={item.id}
+                  className={`w-full border-b border-gray-200 sm:border-b-0 ${
+                    index !== options.length - 1 ? "sm:border-r" : ""
+                  }`}
+                >
+                  <div className="flex items-center ps-3">
+                    <input
+                      id={`option-${item.id}`}
+                      type="radio"
+                      name="selection"
+                      value={item.id}
+                      checked={selectedOption === item.id}
+                      onChange={(e) => setSelectedOption(e.target.value)}
+                      className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2"
+                    />
+                    <label
+                      htmlFor={`option-${item.id}`}
+                      className="w-full py-3 ms-2 text-sm font-medium text-gray-900 text-start cursor-pointer"
+                    >
+                      {item.label}
+                    </label>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+
           <div className="">
-            <p className="pb-5 font-medium text-start">Review</p>
+            <p className="pb-3 font-medium text-start">Review</p>
             <textarea
               value={userReview}
               onChange={(e) => setUserReview(e.target.value)}

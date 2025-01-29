@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { supabase } from "../../ui/supabaseClient";
 
 export async function POST(request: Request) {
-  const { user_phone, rating, review } = await request.json();
+  const { user_phone, rating, review, need_ai } = await request.json();
   try {
     const { error } = await supabase
       .from("ReviewsAndRatings")
@@ -11,6 +11,7 @@ export async function POST(request: Request) {
           rating: rating,
           review,
           user_phone,
+          need_ai,
         },
       ])
       .select();
