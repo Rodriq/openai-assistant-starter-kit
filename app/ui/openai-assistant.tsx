@@ -243,7 +243,7 @@ const OpenAIAssistant: React.FC<OpenAIAssistantProps> = ({
   }
 
   // handles changes to the prompt input field
-  function handlePromptChange(e: React.ChangeEvent<HTMLInputElement>) {
+  function handlePromptChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
     setPrompt(e.target.value);
   }
 
@@ -291,13 +291,22 @@ const OpenAIAssistant: React.FC<OpenAIAssistantProps> = ({
       ))}
       {isLoading && <OpenAIAssistantMessage message={streamingMessage} />}
       <form onSubmit={handleSubmit} className="m-2 flex">
-        <input
+        {/* I need a text area with max lines 4 */}
+        <textarea
           disabled={isLoading}
           autoFocus
           className="border rounded w-full py-2 px-3 text-gray-70"
           onChange={handlePromptChange}
           value={prompt}
           placeholder="what do you want to know?"
+          rows={2.2}
+        // <input
+        //   disabled={isLoading}
+        //   autoFocus
+        //   className="border rounded w-full py-2 px-3 text-gray-70"
+        //   onChange={handlePromptChange}
+        //   value={prompt}
+        //   placeholder="what do you want to know?"
         />
         {isLoading ? (
           <button
